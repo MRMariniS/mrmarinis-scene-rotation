@@ -1,4 +1,4 @@
-# Marini's Scene Rotation
+# MRMariniS' Scene Rotation
 
 > **This module is based on, and forked from, Geano's Scene Rotation.** All credit for the original module goes to **GeanoFee** ([original repository](https://github.com/GeanoFeeFoundry/geanos-scene-rotation)), released under the MIT License. This fork only adds Foundry VTT v14 support (background/foreground now live in scene Levels). It is not affiliated with or endorsed by the original author. To avoid clashing with the original, it uses the module id `mrmarinis-scene-rotation`: disable the original if both are installed.
 
