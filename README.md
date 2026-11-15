@@ -1,6 +1,8 @@
-# Geano's Scene Rotation
+# Geano's Scene Rotation (v14 Fork by MRMariniS)
 
-![Geano's Scene Rotation Showcase](https://github.com/GeanoFee/geanos-scene-rotation/blob/main/showcase.jpg?raw=true)
+> **This is an unofficial fork.** All credit for the original module goes to **GeanoFee** ([original repository](https://github.com/GeanoFeeFoundry/geanos-scene-rotation)), released under the MIT License. This fork only adds Foundry VTT v14 support (background/foreground now live in scene Levels). It is not affiliated with or endorsed by the original author. To avoid clashing with the original, it uses the module id `geanos-scene-rotation-v14`: disable the original if both are installed.
+
+![Geano's Scene Rotation Showcase](https://github.com/GeanoFeeFoundry/geanos-scene-rotation/blob/main/showcase.jpg?raw=true)
 
 A FoundryVTT module that solves one of the most annoying issues in Foundry: rotating a scene 90 degrees after you've already set it up.
 
@@ -19,7 +21,7 @@ A FoundryVTT module that solves one of the most annoying issues in Foundry: rota
 
 ## 🚀 Installation
 
-- **Manifest URL**: `https://github.com/GeanoFee/geanos-scene-rotation/releases/latest/download/module.json` within Foundry's "Install Module" window.
+- **Manifest URL**: `https://github.com/MRMariniS/geanos-scene-rotation-v14/releases/latest/download/module.json` within Foundry's "Install Module" window.
 
 ## 🎮 Usage
 
@@ -39,7 +41,7 @@ When you rotate a scene, the module:
 
 ## 🔧 Compatibility
 
-Verified for Foundry VTT v12. Should work on v10+.
+This fork targets Foundry VTT v14 (build 370). Not tested on older versions; use the original module for v13 and earlier.
 
 ---
 ## License

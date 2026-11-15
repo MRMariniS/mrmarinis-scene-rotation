@@ -108,29 +108,23 @@ class SceneRotator {
         updates.width = newWidth;
         updates.height = newHeight;
         // 1.5 Background Offset Rotation
-        const oldOffX = this.scene.background.offsetX || 0;
-        const oldOffY = this.scene.background.offsetY || 0;
-
-        // Calculate new offsets based on rotation
         // 90 CW: Top-Left of new image corresponds to Bottom-Left of old image relative to (0,0)
         // -90 CCW: Top-Left of new image corresponds to Top-Right of old image relative to (0,0)
+        const rotateOffset = (oldOffX = 0, oldOffY = 0) => {
+            if (degrees === 90 || degrees === -270) return { x: -oldOffY, y: oldOffX };
+            if (degrees === -90 || degrees === 270) return { x: oldOffY, y: -oldOffX };
+            if (Math.abs(degrees) === 180) return { x: -oldOffX, y: -oldOffY };
+            return { x: oldOffX, y: oldOffY };
+        };
 
-        let newOffX = oldOffX;
-        let newOffY = oldOffY;
+        // v14 moved background/foreground from the Scene to Levels (scene.levels).
+        const hasLevels = !!this.scene.levels?.size;
 
-        if (degrees === 90 || degrees === -270) {
-            newOffX = -oldOffY;
-            newOffY = oldOffX;
-        } else if (degrees === -90 || degrees === 270) {
-            newOffX = oldOffY;
-            newOffY = -oldOffX;
-        } else if (Math.abs(degrees) === 180) {
-            newOffX = -oldOffX;
-            newOffY = -oldOffY;
+        if (!hasLevels) {
+            const off = rotateOffset(this.scene.background?.offsetX, this.scene.background?.offsetY);
+            updates["background.offsetX"] = off.x;
+            updates["background.offsetY"] = off.y;
         }
-
-        updates["background.offsetX"] = newOffX;
-        updates["background.offsetY"] = newOffY;
 
         // 2. Embedded Documents
         // Atomic Update: Gather updates for all embedded documents into the main update object.
@@ -273,16 +267,41 @@ class SceneRotator {
         try {
             const imageRotator = new ImageRotator();
 
-            if (this.scene.background.src) {
-                ui.notifications.info("Rotating background image...");
-                const newBg = await imageRotator.rotateAndUpload(this.scene.background.src, degrees, "image/jpeg");
-                if (newBg) updates["background.src"] = newBg;
-            }
+            if (hasLevels) {
+                const levelUpdates = [];
+                for (const level of this.scene.levels) {
+                    const lu = { _id: level.id };
+                    const off = rotateOffset(level.background?.offsetX, level.background?.offsetY);
+                    lu["background.offsetX"] = off.x;
+                    lu["background.offsetY"] = off.y;
+                    const fOff = rotateOffset(level.foreground?.offsetX, level.foreground?.offsetY);
+                    lu["foreground.offsetX"] = fOff.x;
+                    lu["foreground.offsetY"] = fOff.y;
+                    if (level.background?.src) {
+                        ui.notifications.info(`Rotating background image (${level.name})...`);
+                        const newBg = await imageRotator.rotateAndUpload(level.background.src, degrees, "image/jpeg");
+                        if (newBg) lu["background.src"] = newBg;
+                    }
+                    if (level.foreground?.src) {
+                        ui.notifications.info(`Rotating foreground image (${level.name})...`);
+                        const newFg = await imageRotator.rotateAndUpload(level.foreground.src, degrees, "image/png");
+                        if (newFg) lu["foreground.src"] = newFg;
+                    }
+                    levelUpdates.push(lu);
+                }
+                updates.levels = levelUpdates;
+            } else {
+                if (this.scene.background?.src) {
+                    ui.notifications.info("Rotating background image...");
+                    const newBg = await imageRotator.rotateAndUpload(this.scene.background.src, degrees, "image/jpeg");
+                    if (newBg) updates["background.src"] = newBg;
+                }
 
-            if (this.scene.foreground) {
-                ui.notifications.info("Rotating foreground image...");
-                const newFg = await imageRotator.rotateAndUpload(this.scene.foreground, degrees, "image/png");
-                if (newFg) updates.foreground = newFg;
+                if (this.scene.foreground) {
+                    ui.notifications.info("Rotating foreground image...");
+                    const newFg = await imageRotator.rotateAndUpload(this.scene.foreground, degrees, "image/png");
+                    if (newFg) updates.foreground = newFg;
+                }
             }
         } catch (err) {
             console.error(err);
