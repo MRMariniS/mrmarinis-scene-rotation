@@ -1,8 +1,8 @@
 {
-  "id": "marinis-scene-rotation",
+  "id": "mrmarinis-scene-rotation",
   "title": "Marini's Scene Rotation",
   "description": "Rotates an entire scene (background, walls, lights, tokens, etc.) by 90 degrees, with Foundry VTT v14 Levels support. Based on Geano's Scene Rotation by GeanoFee (MIT).",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "authors": [
     {
       "name": "MRMariniS",
@@ -29,9 +29,9 @@
       "path": "languages/en.json"
     }
   ],
-  "url": "https://github.com/MRMariniS/marinis-scene-rotation",
-  "manifest": "https://github.com/MRMariniS/marinis-scene-rotation/releases/latest/download/module.json",
-  "download": "https://github.com/MRMariniS/marinis-scene-rotation/releases/download/2.1.1/module.zip",
+  "url": "https://github.com/MRMariniS/mrmarinis-scene-rotation",
+  "manifest": "https://github.com/MRMariniS/mrmarinis-scene-rotation/releases/latest/download/module.json",
+  "download": "https://github.com/MRMariniS/mrmarinis-scene-rotation/releases/download/2.1.2/module.zip",
   "flags": {
     "forkOf": "https://github.com/GeanoFeeFoundry/geanos-scene-rotation"
   }
